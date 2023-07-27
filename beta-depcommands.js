@@ -19,7 +19,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.BETATOKEN);
 		console.log(`${commands.length} 個のアプリケーションコマンドを登録します。`);
 
 		const data = await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENTID, process.env.GUILDID),
+			Routes.applicationGuildCommands(process.env.BETACLIENTID, process.env.GUILDID),
 			{ body: commands },
 		);
 
