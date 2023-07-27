@@ -100,5 +100,11 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
         }); 
 }}});
 
+//問い合わせ時に運営にメンションを飛ばす機能
+client.on(Events.ThreadCreate, (thread) => {
+    if ( process.env.SPCHID !== thread.parentId) return;
+    client.channels.cache.get(`${thread.id}`).send(`<@&${process.env.DMROLEID}><@&${process.env.MGROLEID}>\n問い合わせを受け付けました。対応までもうしばらくお待ちください。`);
+})
+
 //ログイン
-client.login(process.env.TOKEN); 
+client.login(process.env.BETATOKEN); 
