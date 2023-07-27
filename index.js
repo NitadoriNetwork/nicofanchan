@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const dotenv = require('dotenv');
+const request = require('request');
 const { Client, GatewayIntentBits, Collection, Events, IntentsBitField, Partials } = require('discord.js');
 
 dotenv.config({ path: './.env' });
@@ -106,5 +107,51 @@ client.on(Events.ThreadCreate, (thread) => {
     client.channels.cache.get(`${thread.id}`).send(`<@&${process.env.DMROLEID}><@&${process.env.MGROLEID}>\n問い合わせを受け付けました。対応までもうしばらくお待ちください。`);
 })
 
+//スパム自動削除
+
+client.on('messageCreate', async message => {
+	try {
+        if (message.author.bot) return;
+        let urls = String(message.content).match(/https?:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#\u3000-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+/g);
+        if (urls) {
+            let safeResult = await getSafe(urls);
+            if (safeResult.matches) {
+                message.delete();
+            }
+        }
+	} catch (error) {
+		console.error(error);
+	}
+});
+
+function getSafe(urls) {
+    return new Promise((resolve, reject) => {
+        request({
+            url: `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.SBAKEY}`,
+            json:  {
+                "client": {
+                    "clientId":      `${process.env.CLIENTID}`,
+                    "clientVersion": "1.5.2"
+                },
+                "threatInfo": {
+                    "threatTypes":      ["MALWARE", "SOCIAL_ENGINEERING"],
+                    "platformTypes":    ["WINDOWS"],
+                    "threatEntryTypes": ["URL"],
+                    "threatEntries": urls.map(f => {
+                        return { "url": f }
+                    })
+                }
+            },
+            method: "POST"
+        }, function (error, response, body) {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(body);
+            }
+        });
+    });
+}
+
 //ログイン
-client.login(process.env.BETATOKEN); 
+client.login(process.env.TOKEN); 
