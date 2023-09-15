@@ -8,7 +8,9 @@
 |GUILDID|=|ギルドID|
 |THCHID|=|チャンネルID|
 |SPCHID|=|チャンネルID|
+|OFFCHID|=|チャンネルID|
 |TNROLEID|=|ロールID|
 |DMROLEID|=|ロールID|
 |MGROLEID|=|ロールID|
+|OFFROLEID|=|ロールID|
 |SBAKEY|=|APIキー|
