@@ -21,6 +21,7 @@ for (const file of commandFiles) {
 
 client.once(Events.ClientReady, () => {
 	console.log('Ready!!'); // 起動時に"Ready!!"とコンソールに出力する
+    
 });
 
 client.on(Events.InteractionCreate, async interaction => {
@@ -44,7 +45,7 @@ var end_buf=Date.now();
 
 client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
 // 開始時の動作
-    if(newGuildMember.channelId != process.env.NOCNSENDID1 && newGuildMember.channelId != process.env.NOCNSENDID2 && newGuildMember.channelId != process.env.NOCNSENDID3 && newGuildMember.channelId != process.env.NOCNSENDID4) {
+    if( newGuildMember.channelId === process.env.OFFCHID ) {
         if(oldGuildMember.channelId == null && newGuildMember.channelId != null){
             if(client.channels.cache.get(newGuildMember.channelId).members.size==1){
             //時刻等の取得
@@ -58,7 +59,7 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
             let nowdate = `${nowy}/${nowm}/${nowd} ${nowh}:${nowmin}:${nowsec}`;
 
             client.channels.cache.get(`${process.env.TNCHID}`).send({
-                content: `<@&${process.env.TNROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
+                content: `<@&${process.env.OFFROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
                 embeds: [{
                     color: 0xF00035,
                     timestamp: new Date(),
@@ -74,7 +75,39 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
                 }],
             });
             start_buf = Date.now();
-            }}}
+            }} else {
+                if(oldGuildMember.channelId == null && newGuildMember.channelId != null){
+                    if(client.channels.cache.get(newGuildMember.channelId).members.size==1){
+                    //時刻等の取得
+                    let date = new Date();
+                    let nowy = date.getFullYear();
+                    let nowm = date.getMonth();
+                    let nowd = date.getDate();
+                    let nowh = date.getHours();
+                    let nowmin = date.getMinutes();
+                    let nowsec = date.getSeconds();
+                    let nowdate = `${nowy}/${nowm}/${nowd} ${nowh}:${nowmin}:${nowsec}`;
+        
+                    client.channels.cache.get(`${process.env.TNCHID}`).send({
+                        content: `<@&${process.env.TNROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
+                        embeds: [{
+                            color: 0xF00035,
+                            timestamp: new Date(),
+                        footer: {
+                            text: "ニコふぁんちゃん",
+                        },
+                        title: `通話開始`,
+                        fields: [
+                            {name: `チャンネル`, value: `<#${newGuildMember.channelId}>`, inline: true},
+                            {name: `開始した人`, value: `<@${newGuildMember.id}>`, inline: true},
+                            {name: `開始時間`, value: nowdate, inline: true}
+                        ]
+                        }],
+                    });
+                    start_buf = Date.now();
+                    }}
+            }
+        }
     //終了時の動作
     if(newGuildMember.channelId==undefined&&oldGuildMember.channelId!=undefined){
         if(client.channels.cache.get(oldGuildMember.channelId).members.size==0){
@@ -154,4 +187,4 @@ function getSafe(urls) {
 }
 
 //ログイン
-client.login(process.env.TOKEN); 
+client.login(process.env.BETATOKEN); 
