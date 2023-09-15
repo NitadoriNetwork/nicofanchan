@@ -187,4 +187,4 @@ function getSafe(urls) {
 }
 
 //ログイン
-client.login(process.env.BETATOKEN); 
+client.login(process.env.TOKEN); 
