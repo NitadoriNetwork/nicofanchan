@@ -45,7 +45,6 @@ var end_buf=Date.now();
 
 client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
 // 開始時の動作
-    if( newGuildMember.channelId === process.env.OFFCHID ) {
         if(oldGuildMember.channelId == null && newGuildMember.channelId != null){
             if(client.channels.cache.get(newGuildMember.channelId).members.size==1){
             //時刻等の取得
@@ -75,39 +74,7 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
                 }],
             });
             start_buf = Date.now();
-            }} else {
-                if(oldGuildMember.channelId == null && newGuildMember.channelId != null){
-                    if(client.channels.cache.get(newGuildMember.channelId).members.size==1){
-                    //時刻等の取得
-                    let date = new Date();
-                    let nowy = date.getFullYear();
-                    let nowm = date.getMonth();
-                    let nowd = date.getDate();
-                    let nowh = date.getHours();
-                    let nowmin = date.getMinutes();
-                    let nowsec = date.getSeconds();
-                    let nowdate = `${nowy}/${nowm}/${nowd} ${nowh}:${nowmin}:${nowsec}`;
-        
-                    client.channels.cache.get(`${process.env.TNCHID}`).send({
-                        content: `<@&${process.env.TNROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
-                        embeds: [{
-                            color: 0xF00035,
-                            timestamp: new Date(),
-                        footer: {
-                            text: "ニコふぁんちゃん",
-                        },
-                        title: `通話開始`,
-                        fields: [
-                            {name: `チャンネル`, value: `<#${newGuildMember.channelId}>`, inline: true},
-                            {name: `開始した人`, value: `<@${newGuildMember.id}>`, inline: true},
-                            {name: `開始時間`, value: nowdate, inline: true}
-                        ]
-                        }],
-                    });
-                    start_buf = Date.now();
-                    }}
-            }
-        }
+        }}
     //終了時の動作
     if(newGuildMember.channelId==undefined&&oldGuildMember.channelId!=undefined){
         if(client.channels.cache.get(oldGuildMember.channelId).members.size==0){
@@ -138,7 +105,7 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
 client.on(Events.ThreadCreate, (thread) => {
     if ( process.env.SPCHID !== thread.parentId) return;
     client.channels.cache.get(`${thread.id}`).send(`<@&${process.env.DMROLEID}><@&${process.env.MGROLEID}>\n問い合わせを受け付けました。対応までもうしばらくお待ちください。`);
-})
+});
 
 //スパム自動削除
 
@@ -187,4 +154,4 @@ function getSafe(urls) {
 }
 
 //ログイン
-client.login(process.env.TOKEN); 
+client.login(process.env.BETATOKEN); 
