@@ -59,7 +59,7 @@ client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
             let nowdate = `${nowy}/${nowm}/${nowd} ${nowh}:${nowmin}:${nowsec}`;
 
             client.channels.cache.get(`${process.env.TNCHID}`).send({
-                content: `<@&${process.env.OFFROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
+                content: `<@&${process.env.TNROLEID}>\n通話が始まったよ〜！覗いてみてね★`,
                 embeds: [{
                     color: 0xF00035,
                     timestamp: new Date(),
