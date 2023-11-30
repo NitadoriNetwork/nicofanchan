@@ -3,10 +3,10 @@ It cannot be used on other than the designated server.**
 ***
 # ニコふぁんちゃん
 # What's this? 
-nicofanchan is a Discord bot provided by Nitadori Network. 
+nicofanchan is a Discord bot provided by Nitadori Network. <br>
 Equipped with support functions and call-related functions.
 # Merge
-Topic branch => Develop branch == Squash and merge
+Topic branch => Develop branch == Squash and merge<br>
 Develop branch => Master branch == Create a merge commit
 # About more 
 For more information, [click here.]() 
